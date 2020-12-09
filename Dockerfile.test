@@ -1,0 +1,31 @@
+FROM ubuntu:20.04
+#FROM gitlab/gitlab-runner:latest
+
+ENV BIN_URL=https://s3.amazonaws.com/gitlab-runner-downloads/latest/binaries/gitlab-runner-linux-amd64
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        git \
+        wget \
+        tzdata \
+        openssh-client \
+        netcat \
+        tmux \
+        unzip \
+        sshpass \
+        python3 \
+        python3-pip \
+        ansible \
+    && pip3 install --no-cache-dir pywinrm ansible-lint \
+    && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
+    && curl "${BIN_URL}" -o /usr/local/bin/gitlab-runner-linux-amd64 \
+    && chmod +x /usr/local/bin/gitlab-runner-linux-amd64
+
+COPY entrypoint /
+RUN chmod +x /entrypoint
+ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint"]
+CMD ["gitlab-runner-linux-amd64", "run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
