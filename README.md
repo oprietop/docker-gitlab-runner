@@ -1,5 +1,5 @@
 # docker-gitlab-runner
-Gitlab runner plus some packages and a custom enprypoint to allow autoregistration
+Gitlab runner plus some packages and a custom entrypoint for autoregistration
 
 ## Usage example
 ```
@@ -16,7 +16,7 @@ docker run -it --rm --user 999 \
 ```
 
 ## Notes
-You can get the cerficate and store into ca.crt with openssl if needed
+You can get the ca into a ca.crt file with openssl if needed
 ```
 openssl s_client -connect gitlab.com:443 -showcerts </dev/null 2>/dev/null | sed -e '/-----BEGIN/,/-----END/!d'
 ```
