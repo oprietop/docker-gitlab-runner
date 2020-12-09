@@ -2,7 +2,7 @@
 
 set -e
 
-DATA_DIR=${DATA_DIR:-/tmp}
+DATA_DIR=${DATA_DIR:-/tmp/gitlab-runner}
 CONFIG_FILE=${CONFIG_FILE:-$DATA_DIR/config.toml}
 RUNNER_EXECUTOR=${RUNNER_EXECUTOR:-shell}
 
@@ -16,6 +16,7 @@ if [[ -n "${DEBUG}" ]]; then
     set -x
 fi
 
+mkdir -p "${DATA_DIR}"
 touch "${CONFIG_FILE}"
 
 # register the runner

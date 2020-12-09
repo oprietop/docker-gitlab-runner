@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab-runner
+  labels:
+    app: gitlab-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab-runner
+  template:
+    metadata:
+      labels:
+        app: gitlab-runner
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+      - image: oprietop/gitlab-runner
+        name: gitlab-runner
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        env:
+        - name: DEBUG
+          value: "true"
+        - name: CI_SERVER_URL
+          value: "https://gitlab.com"
+        - name: REGISTRATION_TOKEN
+          value: "xxxxxxxxxxxxxxxxxx"
+        - name: RUNNER_TAG_LIST
+          value: "tag1,tag2"
+        - name: RUNNER_LIMIT
+          value: "1"
+        - name: REGISTER_MAXIMUM_TIMEOUT
+          value: "600"
