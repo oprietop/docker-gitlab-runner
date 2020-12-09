@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 DATA_DIR=${DATA_DIR:-/tmp/gitlab-runner}
@@ -16,14 +15,6 @@ if [[ -n "${DEBUG}" ]]; then
     set -x
 fi
 
-mkdir -p "${DATA_DIR}"
-touch "${CONFIG_FILE}"
-
-# register the runner
-if [[ -n "${CI_SERVER_URL}" && -n "${REGISTRATION_TOKEN}" ]]; then
-    gitlab-runner ${options} register --non-interactive --config="${CONFIG_FILE}" --executor="${RUNNER_EXECUTOR}"
-fi
-
 # custom certificate authority path
 CA_CERTIFICATES_PATH=${CA_CERTIFICATES_PATH:-$DATA_DIR/certs/ca.crt}
 LOCAL_CA_PATH="/usr/local/share/ca-certificates/ca.crt"
@@ -37,6 +28,14 @@ update_ca() {
 if [ -f "${CA_CERTIFICATES_PATH}" ]; then
   # update the ca if the custom ca is different than the current
   cmp --silent "${CA_CERTIFICATES_PATH}" "${LOCAL_CA_PATH}" || update_ca
+fi
+
+mkdir -p "${DATA_DIR}"
+touch "${CONFIG_FILE}"
+
+# register the runner
+if [[ -n "${CI_SERVER_URL}" && -n "${REGISTRATION_TOKEN}" ]]; then
+    gitlab-runner ${options} register --non-interactive --config="${CONFIG_FILE}" --executor="${RUNNER_EXECUTOR}"
 fi
 
 # launch gitlab-runner
