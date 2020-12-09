@@ -1,3 +1,4 @@
+```
 # gitlab-runner register --help
 Runtime platform                                    arch=amd64 os=linux pid=9 revision=8fa89735 version=13.6.0
 NAME:
@@ -198,3 +199,4 @@ OPTIONS:
    --custom-cleanup-exec-timeout value                                         Timeout for the cleanup executable (in seconds) [$CUSTOM_CLEANUP_EXEC_TIMEOUT]
    --custom-graceful-kill-timeout value                                        Graceful timeout for scripts execution after SIGTERM is sent to the process (in seconds). This limits the time given for scripts to perform the cleanup before exiting [$CUSTOM_GRACEFUL_KILL_TIMEOUT]
    --custom-force-kill-timeout value                                           Force timeout for scripts execution (in seconds). Counted from the force kill call; if process will be not terminated, Runner will abandon process termination and log an error [$CUSTOM_FORCE_KILL_TIMEOUT]
+```
