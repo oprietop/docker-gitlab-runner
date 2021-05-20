@@ -31,11 +31,14 @@ if [ -f "${CA_CERTIFICATES_PATH}" ]; then
 fi
 
 mkdir -p "${DATA_DIR}"
-touch "${CONFIG_FILE}"
 
-# register the runner
-if [[ -n "${CI_SERVER_URL}" && -n "${REGISTRATION_TOKEN}" ]]; then
-    gitlab-runner ${options} register --non-interactive --config="${CONFIG_FILE}" --executor="${RUNNER_EXECUTOR}"
+if [ ! -f "${CONFIG_FILE}" ]; then
+    touch "${CONFIG_FILE}"
+    # register the runner
+    if [[ -n "${CI_SERVER_URL}" && -n "${REGISTRATION_TOKEN}" ]]; then
+        echo "Registering the runner..."
+        gitlab-runner ${options} register --non-interactive --config="${CONFIG_FILE}" --executor="${RUNNER_EXECUTOR}"
+    fi
 fi
 
 # launch gitlab-runner
